@@ -1,0 +1,62 @@
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+public class HiveJDBCDemo {
+    public static void main(String[] args) {
+        // Set the truststore properties
+        System.setProperty("javax.net.ssl.trustStore", "/path/to/custom/cacerts");
+        System.setProperty("javax.net.ssl.trustStorePassword", "your_truststore_password");
+
+        // JDBC connection parameters
+        String jdbcURL = "jdbc:hive2://<hive_server_host>:<hive_server_port>/default";
+        String username = "<your_username>";
+        String password = "<your_password>";
+
+        Connection connection = null;
+        Statement statement = null;
+        ResultSet resultSet = null;
+
+        try {
+            // Establish a JDBC connection
+            connection = DriverManager.getConnection(jdbcURL, username, password);
+
+            // Create a statement
+            statement = connection.createStatement();
+
+            // Execute an SQL query to fetch results
+            String query = "SELECT * FROM your_hive_table";
+            resultSet = statement.executeQuery(query);
+
+            // Process the results
+            while (resultSet.next()) {
+                // Retrieve data from the result set
+                String column1Value = resultSet.getString("column1");
+                int column2Value = resultSet.getInt("column2");
+                // Add more columns as needed
+
+                // Perform operations with the retrieved data
+                System.out.println("Column1: " + column1Value + ", Column2: " + column2Value);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            // Close resources
+            try {
+                if (resultSet != null) resultSet.close();
+                if (statement != null) statement.close();
+                if (connection != null) connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+}
+
+
+
+// javac HiveJDBCDemo.java
+// java -cp .:/path/to/hive-jdbc-3.1.2-standalone.jar HiveJDBCDemo
+// java HiveJDBCDemo
