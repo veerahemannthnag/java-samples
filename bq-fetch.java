@@ -1,3 +1,5 @@
+
+import java.io.FileInputStream;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.bigquery.BigQuery;
 import com.google.cloud.bigquery.BigQueryOptions;
@@ -5,13 +7,13 @@ import com.google.cloud.bigquery.Job;
 import com.google.cloud.bigquery.JobId;
 import com.google.cloud.bigquery.JobInfo;
 import com.google.cloud.bigquery.QueryJobConfiguration;
-import com.google.cloud.bigquery.QueryJobConfiguration.Builder;
+//import com.google.cloud.bigquery.QueryJobConfiguration.Builder;
 import com.google.cloud.bigquery.TableResult;
 
-public class BigQueryExample {
+public class Main {
     public static void main(String[] args) throws Exception {
         // Set your Google Cloud credentials file path
-        String credentialsFilePath = "path-to-your-credentials.json";
+        String credentialsFilePath = "java/bqsa.json";
 
         // Initialize the BigQuery client with credentials
         BigQuery bigQuery = BigQueryOptions.newBuilder()
@@ -20,7 +22,7 @@ public class BigQueryExample {
                 .getService();
 
         // Your SQL query
-        String query = "SELECT * FROM your_project_id.your_dataset_id.your_table_id WHERE condition";
+        String query = "SELECT * FROM `project-2021-vmw.mydataset.my_table` LIMIT 1000";
 
         // Create a query job configuration
         QueryJobConfiguration queryConfig = QueryJobConfiguration.newBuilder(query)
